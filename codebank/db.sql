@@ -3,7 +3,8 @@ CREATE TABLE credit_cards (
     name VARCHAR NOT NULL,
     number VARCHAR NOT NULL,
     expiration_month VARCHAR NOT NULL,
-    expiration-year VARCHAR,
+    expiration_year VARCHAR,
+    cvv VARCHAR NOT NULL,
     balance FLOAT NOT NULL,
     balance_limit FLOAT NOT NULL,
     PRIMARY KEY (id) 
