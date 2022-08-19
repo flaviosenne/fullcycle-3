@@ -16,7 +16,7 @@ func NewTransactionRepositoryDb(db *sql.DB) *TransactionRepositoryDb {
 }
 
 func (t *TransactionRepositoryDb) SaveTransaction(transaction domain.Transaction, creditCard domain.CreditCard) error {
-	stmt, err := t.db.Prepare(`INSERT INTO transactions(id, credit_card_id, ammount, status, description, store, created_at)
+	stmt, err := t.db.Prepare(`INSERT INTO transactions(id, credit_card_id, amount, status, description, store, created_at)
 	values($1, $2, $3, $4, $5, $6, $7)`)
 
 	if err != nil {
@@ -54,7 +54,7 @@ func (t *TransactionRepositoryDb) SaveTransaction(transaction domain.Transaction
 }
 
 func (t *TransactionRepositoryDb) updateBalance(creditCard domain.CreditCard) error {
-	_, err := t.db.Exec("UPDATE credit_cards set balance = $1 WHERE id = $2", creditCard.Balance, creditCard.ID)
+	_, err := t.db.Exec("UPDATE credit_cards SET balance = $1 WHERE id = $2", creditCard.Balance, creditCard.ID)
 	if err != nil {
 		return err
 	}
@@ -90,7 +90,7 @@ func (t *TransactionRepositoryDb) CreateCreditCard(creditCard domain.CreditCard)
 
 func (t *TransactionRepositoryDb) GetCreditCard(creditCard domain.CreditCard) (domain.CreditCard, error) {
 	var c domain.CreditCard
-	stmt, err := t.db.Prepare("SELECT id, balance, balance_lmit, FROM credit_cards WHERE number = $1")
+	stmt, err := t.db.Prepare("SELECT id, balance, balance_limit FROM credit_cards WHERE number=$1")
 	if err != nil {
 		return c, err
 	}
