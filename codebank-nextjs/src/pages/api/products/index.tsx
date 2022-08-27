@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Product, products } from "../../model";
+import { Product, products } from "../../../model";
 
 export default function handler(
     req: NextApiRequest,

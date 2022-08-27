@@ -45,12 +45,11 @@ const ProductListPage: NextPage<ProductListPageProps> = ({products}) => {
 
 export default ProductListPage
 
-export const getServerSideProps: GetServerSideProps = async (context) =>{
-  const {data} = await http.get('products')
-  console.log('______>',data)
+export const getServerSideProps: GetServerSideProps<ProductListPageProps> = async (context) =>{
+  const {data: products} = await http.get('products')
   return{
     props: {
-      products: data
+      products
     }
   }
 }
