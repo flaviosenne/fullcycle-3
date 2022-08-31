@@ -15,8 +15,9 @@ services:
   db:
     build: .docker/postgres
     container_name: codebank-nestjs-db
-    restart: always
     tty: true
+    ports:
+      - 5433:5432
     volumes: 
       - ./.docker/dbdata:/var/lib/postgresql/data
     environment:
