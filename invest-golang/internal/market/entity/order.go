@@ -9,7 +9,7 @@ type Order struct {
 	Price         float64
 	OrderType     string
 	Status        string
-	Transaction   []*Transaction
+	Transactions  []*Transaction
 }
 
 func NewOrder(id string, investor *Investor, asset *Asset, shares int, price float64, orderType string) *Order {
@@ -22,6 +22,6 @@ func NewOrder(id string, investor *Investor, asset *Asset, shares int, price flo
 		Price:         price,
 		OrderType:     orderType,
 		Status:        "OPEN",
-		Transaction:   []*Transaction{},
+		Transactions:  []*Transaction{},
 	}
 }

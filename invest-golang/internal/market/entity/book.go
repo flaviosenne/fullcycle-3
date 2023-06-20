@@ -49,8 +49,8 @@ func (b *Book) Trade() {
 				if sellOrder.PendingShares > 0 {
 					transaction := NewTransaction(sellOrder, order, order.Shares, sellOrder.Price)
 					b.AddTransaction(transaction, b.Wg)
-					sellOrder.Transaction = append(sellOrder.Transaction, transaction)
-					order.Transaction = append(order.Transaction, transaction)
+					sellOrder.Transactions = append(sellOrder.Transactions, transaction)
+					order.Transactions = append(order.Transactions, transaction)
 					b.OrdersChanOut <- sellOrder
 					b.OrdersChanOut <- order
 
@@ -66,8 +66,8 @@ func (b *Book) Trade() {
 				if buyOrder.PendingShares > 0 {
 					transaction := NewTransaction(order, buyOrder, order.Shares, buyOrder.Price)
 					b.AddTransaction(transaction, b.Wg)
-					buyOrder.Transaction = append(buyOrder.Transaction, transaction)
-					order.Transaction = append(order.Transaction, transaction)
+					buyOrder.Transactions = append(buyOrder.Transactions, transaction)
+					order.Transactions = append(order.Transactions, transaction)
 					b.OrdersChanOut <- buyOrder
 					b.OrdersChanOut <- order
 					if buyOrder.PendingShares > 0 {
