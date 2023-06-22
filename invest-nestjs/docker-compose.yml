@@ -33,6 +33,7 @@ volumes:
 networks:
   my-network:
     external: true
+    driver: local
 
 
 # //Linux ou Mac
