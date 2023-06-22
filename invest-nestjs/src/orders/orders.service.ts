@@ -37,18 +37,21 @@ export class OrdersService {
         type: input.type,
         status: OrderStatus.PENDING,
         partial: input.shares,
+        version: 1,
       },
     });
   }
 
   async executeTransaction(input: InputExecuteTransactionDto) {
+    // transação caso haja algum erro ele vai dar um rollback
+    // travamento usando o atributo version para garantir a integridade dos dados
     return this.prismaService.$transaction(async (prisma) => {
       const order = await prisma.order.findUniqueOrThrow({
         where: { id: input.order_id },
       });
 
       await prisma.order.update({
-        where: { id: input.order_id },
+        where: { id: input.order_id, version: order.version },
         data: {
           status: input.status,
           partial: order.partial - input.negotiated_shares,
@@ -60,6 +63,7 @@ export class OrdersService {
               price: input.price,
             },
           },
+          version: { increment: 1 },
         },
       });
 
@@ -87,12 +91,14 @@ export class OrdersService {
                 asset_id: order.asset_id,
                 wallet_id: order.wallet_id,
               },
+              version: walletAsset.version,
             },
             data: {
               shares:
                 order.type == OrderType.BUY
-                  ? walletAsset.shares + input.negotiated_shares
-                  : walletAsset.shares - input.negotiated_shares,
+                  ? walletAsset.shares + order.shares
+                  : walletAsset.shares - order.shares,
+              version: { increment: 1 },
             },
           });
         } else {

@@ -10,6 +10,8 @@ services:
       - .:/home/node/app
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+    networks:
+      - my-network
 
   db:
     container_name: homebroker_db
@@ -21,6 +23,8 @@ services:
       MONGODB_REPLICA_SET_MODE: primary
       MONGODB_REPLICA_SET_KEY: 123456
       MONGODB_DATABASE: nest
+    networks:
+      - my-network
 
 volumes:
   mongodb_data:
