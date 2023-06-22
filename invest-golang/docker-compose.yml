@@ -1,12 +1,16 @@
 version: '3'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:7.3.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - my-network
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    image: confluentinc/cp-kafka:7.3.0
     depends_on:
       - zookeeper
     ports:
@@ -22,9 +26,12 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+    networks:
+      - my-network
        
   control-center:
-    image: confluentinc/cp-enterprise-control-center:latest
+    container_name: center
+    image: confluentinc/cp-enterprise-control-center:7.3.0
     hostname: control-center
     depends_on:
       - kafka
@@ -34,3 +41,11 @@ services:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       PORT: 9021
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
+    external: true
+    driver: local
