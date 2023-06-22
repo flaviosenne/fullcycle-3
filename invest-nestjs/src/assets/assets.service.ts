@@ -6,8 +6,12 @@ export class AssetsService {
 
     constructor(private prismaService: PrismaService){}
 
-    async create(data: {id: string, symbol: string, price: number}){
-        return await this.prismaService.asset.create({
+    all(){
+        return this.prismaService.asset.findMany()
+    }
+
+    create(data: {id: string, symbol: string, price: number}){
+        return this.prismaService.asset.create({
             data
         })
     }
